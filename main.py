@@ -3,15 +3,12 @@ import aiohttp
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
-# ⚠️ PUT YOUR NEW TOKEN HERE (after revoke)
-TOKEN = 8737206208:AAHY-O4lSnnm1BHIyzGANcCZuCXKZF4incU
-
+TOKEN = "8737206208:AAHY-O4lSnnm1BHIyzGANcCZuCXKZF4incU"
 ADMIN_ID = 8335116442
 
 logging.basicConfig(level=logging.INFO)
 
 
-# ---------- Helpers ----------
 async def fetch_text(url: str) -> str:
     try:
         async with aiohttp.ClientSession() as session:
@@ -21,17 +18,13 @@ async def fetch_text(url: str) -> str:
         return f"API Error: {e}"
 
 
-# ---------- Commands ----------
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "🤖 Bot Started!\n\n"
         "Commands:\n"
         "/adhar <num>\n"
         "/pan <num>\n"
-        "/name <text>\n"
-        "/website <id>\n"
-        "/num <phone>\n"
-        "/email <email>"
+        "/num <phone>"
     )
 
 
@@ -65,17 +58,6 @@ async def num(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(result)
 
 
-async def website(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if not context.args:
-        return await update.message.reply_text("Usage: /website <id>")
-
-    wid = context.args[0]
-    await update.message.reply_text(
-        f"Website Info Request:\nID: {wid}\n(Not configured fully yet)"
-    )
-
-
-# ---------- Main ----------
 def main():
     app = ApplicationBuilder().token(TOKEN).build()
 
@@ -83,7 +65,6 @@ def main():
     app.add_handler(CommandHandler("adhar", adhar))
     app.add_handler(CommandHandler("pan", pan))
     app.add_handler(CommandHandler("num", num))
-    app.add_handler(CommandHandler("website", website))
 
     print("Bot is running...")
     app.run_polling()
