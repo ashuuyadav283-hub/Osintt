@@ -1,5 +1,6 @@
 import logging
 import aiohttp
+import asyncio  # Add this import
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
@@ -8,7 +9,6 @@ ADMIN_ID = 8335116442
 
 logging.basicConfig(level=logging.INFO)
 
-
 async def fetch_text(url: str) -> str:
     try:
         async with aiohttp.ClientSession() as session:
@@ -16,7 +16,6 @@ async def fetch_text(url: str) -> str:
                 return await resp.text()
     except Exception as e:
         return f"API Error: {e}"
-
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
@@ -27,7 +26,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/num <phone>"
     )
 
-
 async def adhar(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not context.args:
         return await update.message.reply_text("Usage: /adhar 123456789012")
@@ -36,7 +34,6 @@ async def adhar(update: Update, context: ContextTypes.DEFAULT_TYPE):
     url = f"https://allinone-ofl0.onrender.com/all-in-one?q={num}"
     result = await fetch_text(url)
     await update.message.reply_text(result)
-
 
 async def pan(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not context.args:
@@ -47,7 +44,6 @@ async def pan(update: Update, context: ContextTypes.DEFAULT_TYPE):
     result = await fetch_text(url)
     await update.message.reply_text(result)
 
-
 async def num(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not context.args:
         return await update.message.reply_text("Usage: /num 1234567890")
@@ -57,8 +53,11 @@ async def num(update: Update, context: ContextTypes.DEFAULT_TYPE):
     result = await fetch_text(url)
     await update.message.reply_text(result)
 
-
 def main():
+    # --- FIX APPLIED HERE ---
+    # Manually create and set an event loop for Python 3.14+ compatibility
+    asyncio.set_event_loop(asyncio.new_event_loop())
+    
     app = ApplicationBuilder().token(TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
@@ -68,7 +67,6 @@ def main():
 
     print("Bot is running...")
     app.run_polling()
-
 
 if __name__ == "__main__":
     main()
