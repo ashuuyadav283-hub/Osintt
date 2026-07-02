@@ -4,7 +4,7 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
 # ⚠️ PUT YOUR NEW TOKEN HERE (after revoke)
-TOKEN = "8737206208:AAEINhgDkzsSFbBGo-fmO4FgMTHfhMJYADs"
+TOKEN = 8737206208:AAHY-O4lSnnm1BHIyzGANcCZuCXKZF4incU
 
 ADMIN_ID = 8335116442
 
